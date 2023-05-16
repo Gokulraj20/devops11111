@@ -1,8 +1,9 @@
-FROM python:3.11
+FROM golang:1.19
 USER 10001
 WORKDIR /app
-COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
-COPY . .
+COPY go.mod go.sum ./
+RUN go mod download
+COPY *.go ./
+RUN go build -o /go-docker-demo
 EXPOSE 8080
-CMD ["python", "main.py"]
+CMD [ "/go-docker-demo" ]
